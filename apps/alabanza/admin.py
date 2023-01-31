@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .forms import MusicianForm
-from .models import Song, Instrument, Musician, Schedule
+from .models import Song, Instrument, Musician, Schedule, ScheduleMusicianInstrument
 
 
 @admin.register(Song)
@@ -21,7 +21,13 @@ class MusicianAdmin(admin.ModelAdmin):
     filter_horizontal = ('instruments',)
 
 
+class ScheduleMusicianInstrumentStackedInline(admin.TabularInline):
+    model = ScheduleMusicianInstrument
+    extra = 0
+
+
 @admin.register(Schedule)
 class ScheduleAdmin(admin.ModelAdmin):
     list_display = ['id', 'date', 'time', 'director']
-    filter_horizontal = ('musicians', 'tracks')
+    inlines = (ScheduleMusicianInstrumentStackedInline,)
+    filter_horizontal = ('tracks',)

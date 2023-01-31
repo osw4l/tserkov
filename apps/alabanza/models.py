@@ -50,9 +50,6 @@ class Schedule(models.Model):
         on_delete=models.PROTECT,
         related_name='schedules'
     )
-    musicians = models.ManyToManyField(
-        Musician
-    )
     tracks = models.ManyToManyField(
         Song
     )
@@ -61,4 +58,22 @@ class Schedule(models.Model):
         verbose_name = 'Programacion'
         verbose_name_plural = 'Programaciones'
 
+
+class ScheduleMusicianInstrument(models.Model):
+    schedule = models.ForeignKey(
+        Schedule,
+        on_delete=models.PROTECT,
+        related_name='musicians'
+    )
+    musician = models.ForeignKey(
+        Musician,
+        on_delete=models.PROTECT
+    )
+    instrument = models.ForeignKey(
+        Instrument,
+        on_delete=models.PROTECT
+    )
+
+    class Meta:
+        unique_together = ['schedule', 'musician', 'instrument']
 
